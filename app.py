@@ -16,7 +16,10 @@ st.title("📺 Netflix Content Analytics Dashboard")
 # -----------------------------
 # Load Data
 # -----------------------------
-df = pd.read_csv("netflix_titles.csv")
+import pandas as pd
+
+csv_url = https://raw.githubusercontent.com/RANGASANJANAGOUD/netflix-dashboard/refs/heads/main/netflix_titles.csv.csv
+df = pd.read_csv(csv_url)
 
 # Convert 'date_added' to datetime
 df['date_added'] = pd.to_datetime(df['date_added'], errors='coerce')
@@ -100,4 +103,5 @@ st.pyplot(fig)
 # -----------------------------
 st.subheader("Filtered Dataset Preview")
 st.dataframe(filtered_df.reset_index(drop=True))
+
 
