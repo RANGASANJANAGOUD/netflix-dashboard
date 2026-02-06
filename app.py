@@ -14,19 +14,13 @@ st.set_page_config(page_title="Netflix Content Analytics", layout="wide")
 st.title("📺 Netflix Content Analytics Dashboard")
 
 # -----------------------------
-# Load CSV from GitHub
+# Load CSV from local relative path
 # -----------------------------
-csv_url = "https://raw.githubusercontent.com/RANGASANJANAGOUD/netflix-dashboard/main/netflix_titles.csv"
+df = pd.read_csv("netflix_titles.csv")  # <- Use relative path in repo
 
-@st.cache_data
-def load_data(url):
-    df = pd.read_csv(url)
-    # Convert date_added to datetime
-    df['date_added'] = pd.to_datetime(df['date_added'], errors='coerce')
-    df['year_added'] = df['date_added'].dt.year
-    return df
-
-df = load_data(csv_url)
+# Convert date_added to datetime
+df['date_added'] = pd.to_datetime(df['date_added'], errors='coerce')
+df['year_added'] = df['date_added'].dt.year
 
 # -----------------------------
 # Sidebar Filters
@@ -105,8 +99,3 @@ st.pyplot(fig)
 # -----------------------------
 st.subheader("Filtered Dataset Preview")
 st.dataframe(filtered_df.reset_index(drop=True))
-
-
-
-
-
