@@ -100,3 +100,4 @@ st.pyplot(fig)
 # -----------------------------
 st.subheader("Filtered Dataset Preview")
 st.dataframe(filtered_df.reset_index(drop=True))
+
