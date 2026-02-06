@@ -14,16 +14,19 @@ st.set_page_config(page_title="Netflix Content Analytics", layout="wide")
 st.title("📺 Netflix Content Analytics Dashboard")
 
 # -----------------------------
-# Load Data
+# Load CSV from GitHub
 # -----------------------------
-import pandas as pd
+csv_url = "https://raw.githubusercontent.com/RANGASANJANAGOUD/netflix-dashboard/main/netflix_titles.csv"
 
-csv_url = https://raw.githubusercontent.com/RANGASANJANAGOUD/netflix-dashboard/refs/heads/main/netflix_titles.csv.csv
-df = pd.read_csv(csv_url)
+@st.cache_data
+def load_data(url):
+    df = pd.read_csv(url)
+    # Convert date_added to datetime
+    df['date_added'] = pd.to_datetime(df['date_added'], errors='coerce')
+    df['year_added'] = df['date_added'].dt.year
+    return df
 
-# Convert 'date_added' to datetime
-df['date_added'] = pd.to_datetime(df['date_added'], errors='coerce')
-df['year_added'] = df['date_added'].dt.year
+df = load_data(csv_url)
 
 # -----------------------------
 # Sidebar Filters
@@ -88,7 +91,6 @@ st.pyplot(fig)
 # Top Genres
 # -----------------------------
 st.subheader("🎭 Top Genres")
-# Split genres and drop NaNs
 genres = filtered_df['listed_in'].dropna().str.split(',', expand=True).stack()
 top_genres = genres.value_counts().head(10)
 fig, ax = plt.subplots()
@@ -99,9 +101,12 @@ ax.set_ylabel("Count")
 st.pyplot(fig)
 
 # -----------------------------
-# Optional: Show Filtered Data
+# Filtered Data Preview
 # -----------------------------
 st.subheader("Filtered Dataset Preview")
 st.dataframe(filtered_df.reset_index(drop=True))
+
+
+
 
 
